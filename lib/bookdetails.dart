@@ -10,6 +10,9 @@ class BookDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Book Detail'),
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
