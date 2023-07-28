@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
 import 'services.dart';
 import 'book.dart';
@@ -35,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     final query = _searchController.text.trim();
                     if (query.isNotEmpty) {
                       try {
-                        final books = await widget.bookService.fetchBooks(query);
+                        final books =
+                            await widget.bookService.fetchBooks(query);
                         setState(() {
                           _books = books;
                         });
@@ -59,51 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: Text(book.author),
                   onTap: () {
                     // Navigate to a new screen to show more details of the book
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetailScreen(book: book),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/details', arguments: book);
                   },
                 );
               },
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class BookDetailScreen extends StatelessWidget {
-  final Book book;
-
-  BookDetailScreen({required this.book});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Book Detail'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(book.imageUrl),
-            SizedBox(height: 16.0),
-            Text(
-              'Title: ${book.title}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text('Author: ${book.author}'),
-            SizedBox(height: 8.0),
-            Text('Description: ${book.description}'),
-          ],
-        ),
       ),
     );
   }

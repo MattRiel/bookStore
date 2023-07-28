@@ -1,3 +1,4 @@
+import 'package:bookstore/bookdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:bookstore/services.dart';
 import 'package:bookstore/homescreen.dart';
@@ -10,6 +11,7 @@ void main() {
     initialRoute: '/',
     routes: {
       '/': (context) => HomeScreen(bookService: bookService),
+      '/details': (context) => BookDetailScreen(),
     },
   ));
 }

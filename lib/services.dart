@@ -24,8 +24,7 @@ class BookService {
           final title = volumeInfo['title'];
           final author = volumeInfo['authors']?.join(', ') ?? 'Unknown Author';
           final description = volumeInfo['description'] ?? 'No description';
-          final imageUrl =
-              volumeInfo['imageLinks']?['thumbnail'] ?? 'No Image';
+          final imageUrl = volumeInfo['imageLinks']?['thumbnail'] ?? 'No Image';
 
           books.add(Book(
             title: title,
