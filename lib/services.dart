@@ -25,12 +25,20 @@ class BookService {
           final author = volumeInfo['authors']?.join(', ') ?? 'Unknown Author';
           final description = volumeInfo['description'] ?? 'No description';
           final imageUrl = volumeInfo['imageLinks']?['thumbnail'] ?? 'No Image';
+          final publisher = volumeInfo['publisher'] ?? 'No Publisher';
+          final publicationDate = volumeInfo['publishedDate'] ?? 'No Date';
+          final numberOfPages = volumeInfo['pageCount'] ?? 'No Page Count';
+          final editor = volumeInfo['editor'] ?? 'No Editor';
 
           books.add(Book(
             title: title,
             author: author,
             description: description,
             imageUrl: imageUrl,
+            publisher: publisher,
+            publicationDate: publicationDate,
+            numberOfPages: numberOfPages,
+            editor: editor,
           ));
         }
         return books;

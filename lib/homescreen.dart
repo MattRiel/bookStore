@@ -25,6 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.grey[900],
+        actions: [
+          IconButton(
+            onPressed: () {
+              _searchController.clear();
+              _searchBooks('');
+            },
+            icon: Icon(Icons.refresh),
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -36,21 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: 'Enter book title',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () async {
+                  onPressed: () {
                     final query = _searchController.text.trim();
-                    if (query.isNotEmpty) {
-                      try {
-                        final books =
-                            await widget.bookService.fetchBooks(query);
-                        setState(() {
-                          _books = books;
-                        });
-                      } catch (e) {
-                        print('Error fetching books: $e');
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Gagal memuat buku"),
-                        duration: Duration(seconds: 2),));
-                      }
-                    }
+                    _searchBooks(query);
                   },
                 ),
               ),
@@ -62,7 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final book = _books[index];
                 return ListTile(
-                  leading: Image.network(book.imageUrl),
+                  leading: Container(
+                    child: Image.network(book.imageUrl),
+                    width: 60,
+                    height: 60,
+                  ),
                   title: Text(book.title),
                   subtitle: Text(book.author),
                   onTap: () {
@@ -76,5 +77,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  // Define the _searchBooks() method to fetch books from the API based on the search query
+  Future<void> _searchBooks(String query) async {
+    if (query.isNotEmpty) {
+      try {
+        final books = await widget.bookService.fetchBooks(query);
+        setState(() {
+          _books = books;
+        });
+      } catch (e) {
+        print('Error fetching books: $e');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Gagal memuat buku"),
+          duration: Duration(seconds: 2),
+        ));
+      }
+    }
   }
 }
