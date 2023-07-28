@@ -58,18 +58,27 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _books.length,
               itemBuilder: (context, index) {
                 final book = _books[index];
-                return ListTile(
-                  leading: Container(
-                    child: Image.network(book.imageUrl),
-                    width: 60,
-                    height: 60,
+                return Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ListTile(
+                      leading: Container(
+                        child: Image.network(book.imageUrl),
+                        width: 60,
+                        height: 60,
+                      ),
+                      title: Text(book.title),
+                      subtitle: Text(book.author),
+                      onTap: () {
+                        // Navigate to a new screen to show more details of the book
+                        Navigator.pushNamed(context, '/details',
+                            arguments: book);
+                      },
+                    ),
                   ),
-                  title: Text(book.title),
-                  subtitle: Text(book.author),
-                  onTap: () {
-                    // Navigate to a new screen to show more details of the book
-                    Navigator.pushNamed(context, '/details', arguments: book);
-                  },
                 );
               },
             ),
@@ -80,20 +89,28 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Define the _searchBooks() method to fetch books from the API based on the search query
-  Future<void> _searchBooks(String query) async {
-    if (query.isNotEmpty) {
-      try {
-        final books = await widget.bookService.fetchBooks(query);
-        setState(() {
-          _books = books;
-        });
-      } catch (e) {
-        print('Error fetching books: $e');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  Future<void> _searchBooks([String? query]) async {
+    if (query == null || query.trim().isEmpty) {
+      // If the query is null or empty, clear the search results and return
+      setState(() {
+        _books.clear();
+      });
+      return;
+    }
+
+    try {
+      final books = await widget.bookService.fetchBooks(query);
+      setState(() {
+        _books = books;
+      });
+    } catch (e) {
+      print('Error fetching books: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text("Gagal memuat buku"),
           duration: Duration(seconds: 2),
-        ));
-      }
+        ),
+      );
     }
   }
 }
