@@ -21,7 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Search'),
+        title: Text('Google Book'),
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
       ),
       body: Column(
         children: [
@@ -44,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       } catch (e) {
                         print('Error fetching books: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Gagal memuat buku"),
+                        duration: Duration(seconds: 2),));
                       }
                     }
                   },
